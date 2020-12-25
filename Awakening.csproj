@@ -10,8 +10,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\phaser.js" />
-    <None Include="wwwroot\phaser.min.js" />
+    <TypeScriptCompile Remove="wwwroot\file.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Phaser\Core\phaser.js" />
+    <None Include="wwwroot\Phaser\Core\phaser.min.js" />
   </ItemGroup>
 
   <ItemGroup>

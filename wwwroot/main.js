@@ -1,23 +1,50 @@
+const Random = Phaser.Math.Between;
+const COLOR_PRIMARY = 0x4e342e;
+const COLOR_LIGHT = 0x7b5e57;
+const COLOR_DARK = 0x260e04;
 class StartScene extends Phaser.Scene {
     constructor() {
         super("StartScene");
     }
+    preload() {
+        this.load.scenePlugin({
+            key: 'rexuiplugin',
+            url: './Phaser/Plugins/rexuiplugin.min.js',
+            sceneKey: 'rexUI'
+        });
+    }
     create() {
-        this.button = this.add.graphics()
-            .fillStyle(0xffff00)
-            .fillRect(200, 166, 152, 61)
-            .setInteractive()
-            .on('pointerdown', () => {
-            console.log("You clicked to play.. and nothing happenend.");
+        this["rexUI"].add.fixWidthButtons({
+            x: 0,
+            y: 0,
+            width: 400,
+            height: 400,
+            orientation: 0,
+            // Elements
+            // background: backgroundGameObject,
+            buttons: [
+                new UIButton(this, 200, 166, 152, 61, "Play", 0xffff00),
+            ],
+            align: 0,
+            click: {
+                mode: 'pointerup',
+                clickInterval: 100
+            },
+            // space: 0,
+            // space: { left: 0, right:0, top:0, bottom:0, line:0, item:0 },
+            // name: '',
+            // draggable: false,
+            eventEmitter: this,
+        })
+            .setButtonEnable(0)
+            .on('button.over', (button, index, pointer, event) => {
+            console.log(`Clicked me = ${button} ,  from ${index} at ${pointer} , e=${event}`);
         }, this);
-        this.add.text(207, 216, "PLAY")
-            .setFill("color(0,0,255)")
-            .setFontSize(56)
-            .setFont("serif");
     }
 }
+var game;
 window.onload = () => {
-    var game = new Phaser.Game({
+    game = new Phaser.Game({
         type: Phaser.AUTO,
         physics: {
             arcade: {
@@ -32,4 +59,30 @@ window.onload = () => {
         ]
     });
 };
+class UIButton {
+    constructor(scene, x, y, width, height, text, color) {
+        this.scene = scene;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.text = text;
+        this.color = color;
+        scene["rexUI"].add.label({
+            x: x,
+            y: y,
+            width: width,
+            height: height,
+            background: scene["rexUI"].add.roundRectangle(x, y, width, height, 20, COLOR_LIGHT),
+            text: scene.add.text(x, y, text, {
+                fontSize: "18"
+            }),
+            space: {
+                left: 10,
+                right: 10,
+            },
+            align: 'center'
+        });
+    }
+}
 //# sourceMappingURL=main.js.map
